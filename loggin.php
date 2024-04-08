@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="css/loggin.css">
 </head>
 <body>
+    <a href="php/emploi_temps.php"><button>skip</button></a>
+    <br>
     <div class="container">
         <h2>Login</h2>
         <form action="login.php" method="post">
@@ -17,5 +19,6 @@
             <input type="submit" value="Login">
         </form>
     </div>
+    
 </body>
 </html>

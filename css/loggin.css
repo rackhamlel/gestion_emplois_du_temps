@@ -1,29 +1,30 @@
-body {
-    font-family: Arial, sans-serif;
-}
 .container {
-    width: 300px;
-    margin: 0 auto;
-    margin-top: 100px;
-    text-align: center;
-}
-input[type="text"],
-input[type="password"],
-input[type="submit"] {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    border-radius: 5px;
-}
-input[type="submit"] {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-input[type="submit"]:hover {
-    background-color: #45a049;
-}
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .form-container {
+            width: 45%; /* Ajustez la largeur du formulaire selon vos besoins */
+        }
+
+        .table-container {
+            width: 45%; /* Ajustez la largeur du tableau selon vos besoins */
+            background-color: #f2f2f2; /* Couleur de fond du tableau */
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50; /* Couleur de fond de l'en-tête du tableau */
+            color: white;
+        }

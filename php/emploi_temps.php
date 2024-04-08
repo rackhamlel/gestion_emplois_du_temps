@@ -20,6 +20,8 @@
     </style>
 </head>
 <body>
+    <a href="../loggin.php"><button>déconnexion</button></a>
+    <a href="gestion_utilisateur.php"><button>Voir utilisateur</button></a>
     <h2>Emploi du temps</h2>
     <table>
         <tr>
