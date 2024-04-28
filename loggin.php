@@ -11,7 +11,7 @@
     <br>
     <div class="container">
         <h2>Login</h2>
-        <form action="login.php" method="post">
+        <form action="php/enregistrement.php" method="post">
             <input type="text" name="username" placeholder="Username" required>
             <br>
             <input type="password" name="password" placeholder="Password" required>
