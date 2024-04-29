@@ -15,8 +15,8 @@
     <a href="emploi_temps_+3.php"><button>S+3</button></a>
     
     <h2>Emploi du temps</h2>
-    <table>
-        <tr id="joursSemaine">
+    <table> 
+        <tr>
             <th>Heure</th>
             <th>Lundi</th>
             <th>Mardi</th>
@@ -25,7 +25,6 @@
             <th>Vendredi</th>
         </tr>
         <?php
-        
         // Création de lignes pour chaque heure de la journée
         for ($i = 8; $i <= 18; $i++) {
             echo "<tr>";
@@ -38,6 +37,5 @@
         }
         ?>
     </table>
-    <script src="/js/jour.js"></script>
 </body>
 </html>
