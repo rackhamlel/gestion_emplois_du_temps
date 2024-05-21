@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  webserver:
+    build:
+      context: .
+      dockerfile: Dockerfile.php
+    ports:
+      - "8080:80"
+    volumes:
+      - ./site:/var/www/html
+      - ./php/php.ini:/usr/local/etc/php/conf.d/php.ini
+    depends_on:
+      - database
+    environment:
+      - MYSQL_HOST=database
+      - MYSQL_USER=maxime
+      - MYSQL_PASSWORD=FND-FND
+      - MYSQL_DATABASE=GESTION_PLANNING
+    restart: always
+
+  database:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: FND-FND
+      MYSQL_DATABASE: GESTION_PLANNING
+      MYSQL_USER: maxime  
+      MYSQL_PASSWORD: FND-FND
+    restart: always
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: database
+      MYSQL_ROOT_PASSWORD: FND-FND
+    ports:
+      - "8181:80"
+    depends_on:
+      - database
+    restart: always
+
+  
