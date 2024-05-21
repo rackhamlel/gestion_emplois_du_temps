@@ -33,7 +33,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Authentification réussie
         $_SESSION['admin'] = $resultat['admin'];
         $_SESSION['id'] = $resultat['id_utilisateur'];
-        $_SESSION['pw'] = $hashedPassword;
         header('location:../admin/php/S0/emploi_temps.php');
         exit;
     } else {

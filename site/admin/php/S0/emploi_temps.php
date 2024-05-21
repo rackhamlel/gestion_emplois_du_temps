@@ -1,6 +1,5 @@
 <?php
 session_start();
-echo $_SESSION['pw'];
 $message = '';
 if (isset($_SESSION['redirect_message'])) {
     $message = $_SESSION['redirect_message'];
