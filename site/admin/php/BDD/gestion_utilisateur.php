@@ -1,7 +1,7 @@
 <?php
 session_start();
 if ($_SESSION['admin'] != 1){
-    $_SESSION['redirect_message'] = "Permission insuffisante"; // Définir le message à afficher
+    $_SESSION['redirect_message'] = "Permission insuffisante"; 
     header('Location: /admin/php/S0/emploi_temps.php');
     exit();
 }

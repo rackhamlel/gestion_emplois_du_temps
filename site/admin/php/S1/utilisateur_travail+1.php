@@ -1,16 +1,7 @@
 <?php
 session_start();
-// Connexion à la base de données (à remplacer par vos propres informations de connexion)
-$serveur = "database";
-$utilisateur = "maxime";
-$motdepasse = "FND-FND";
-$base_de_donnees = "GESTION_PLANNING";
-
-
-$connexion = new PDO("mysql:host=$serveur;dbname=$base_de_donnees", $utilisateur, $motdepasse);
-// Définir le mode d'erreur PDO à exception
-$connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-// Récupération des données de la table EmploiDuTemps
+// Connexion à la base de données 
+require_once'../BDD/connection_BDD.php';
 $requeteEmploi = "SELECT id_utilisateur, DateHeureEmbauche, DateHeureDebauche 
 FROM EmploiDuTemps 
 WHERE WEEK(DateHeureEmbauche) = WEEK(DATE_ADD(NOW(), INTERVAL 1 WEEK));";

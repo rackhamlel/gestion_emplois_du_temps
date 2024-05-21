@@ -34,4 +34,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Afficher seulement la semaine +2, en excluant les samedis et dimanches
     calendar.innerHTML = '<h2>Calendrier</h2>' + '<div class="week">' + displayWeek(nextWeekPlusTwo) + '</div>';
+    var editButtons = document.querySelectorAll('.editBtn');
+
+    // Ajoutez un gestionnaire d'événements à chaque bouton
+    editButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            // Récupérez l'ID de l'utilisateur à partir de l'attribut data-id
+            var userId = this.getAttribute('data-id');
+
+            // Affichez le formulaire d'édition lorsque le bouton est cliqué
+            document.getElementById('editForm').style.display = 'block';
+
+            // Assurez-vous que l'ID de l'utilisateur est inclus dans le formulaire
+            document.getElementById('userIdInput').value = userId;
+        });
+    });
 });

@@ -1,10 +1,11 @@
 <?php
 session_start();
-require_once'connection_BDD.php';
+// Connexion à la base de données 
+require_once'../BDD/connection_BDD.php';
 // Récupération des données de la table EmploiDuTemps
-$requeteEmploi = "SELECT id_utilisateur, DateHeureEmbauche, DateHeureDebauche
-FROM EmploiDuTemps
-WHERE YEARWEEK(DateHeureEmbauche, 1) >= YEARWEEK(DATE_SUB(NOW(), INTERVAL 7 DAY), 1);";
+$requeteEmploi = "SELECT id_utilisateur, DateHeureEmbauche, DateHeureDebauche 
+FROM EmploiDuTemps 
+WHERE WEEK(DateHeureEmbauche) = WEEK(DATE_ADD(NOW(), INTERVAL 3 WEEK));";
 $statementEmploi = $connexion->prepare($requeteEmploi);
 $statementEmploi->execute();
 

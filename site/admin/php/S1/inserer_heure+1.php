@@ -1,14 +1,6 @@
 <?php
 session_start();
-// Connexion à la base de données
-$serveur = "database";
-$utilisateur = "maxime";
-$motdepasse = "FND-FND";
-$base_de_donnees = "GESTION_PLANNING";
-
-try {
-    $connexion = new PDO("mysql:host=$serveur;dbname=$base_de_donnees", $utilisateur, $motdepasse);
-    $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+require_once'../BDD/connection_BDD.php';
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $action = $_POST['action'];
@@ -68,7 +60,5 @@ try {
             }
         }
     }
-} catch(PDOException $e) {
-    die("Erreur : " . $e->getMessage());
-}
+
 ?>

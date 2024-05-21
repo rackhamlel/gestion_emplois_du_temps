@@ -19,12 +19,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Récupération des données du formulaire
     $username = $_POST['username'];
     $password = $_POST['password'];
-
+    $hashedPassword = hash('sha256', $password);
     // Requête préparée pour vérifier si l'utilisateur existe dans la base de données
     $requete = "SELECT * FROM Utilisateur WHERE Nom = :username AND MotDePasse = :password";
     $statement = $connexion->prepare($requete);
     $statement->bindParam(':username', $username);
-    $statement->bindParam(':password', $password);
+    $statement->bindParam(':password', $hashedPassword);
     $statement->execute();
 
     $resultat = $statement->fetch(PDO::FETCH_ASSOC);
@@ -32,6 +32,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($resultat) {
         // Authentification réussie
         $_SESSION['admin'] = $resultat['admin'];
+        $_SESSION['id'] = $resultat['id_utilisateur'];
+        $_SESSION['pw'] = $hashedPassword;
         header('location:../admin/php/S0/emploi_temps.php');
         exit;
     } else {

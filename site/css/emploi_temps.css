@@ -164,7 +164,7 @@ nav {
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #ddd;
+    color: #black;
   }
   h1{
     display: flex;
@@ -179,4 +179,7 @@ nav {
     margin: 10px 0;
     text-align: center;
 }
-  
+.note-sem{
+    display: flex;
+    justify-content: flex-start;
+}

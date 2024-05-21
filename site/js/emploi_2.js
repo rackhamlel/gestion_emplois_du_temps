@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     var today = new Date(); // Récupérer la date d'aujourd'hui
     var nextWeek = new Date(today); // Créer une copie de la date d'aujourd'hui
-    nextWeek.setDate(nextWeek.getDate() + (1 + 7 - nextWeek.getDay())); // Avancer d'une semaine à partir du lundi suivant
+    nextWeek.setDate(nextWeek.getDate() + (1 + 14 - nextWeek.getDay())); // Avancer de deux semaine à partir du lundi suivant
 
     var twoWeeksLater = new Date(nextWeek); // Créer une copie de la date de la semaine suivante
     twoWeeksLater.setDate(twoWeeksLater.getDate() + 7); // Avancer d'une semaine à partir du lundi suivant
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Boucle pour afficher les dates pour chaque jour de la semaine, en excluant les samedis et dimanches
         for (var i = 0; i < 5; i++) {
-            html += '<td>' + getFrenchDayName(currentDate) + ' ' + currentDate.getDate() + ' ' + getFrenchMonthName(currentDate) + '</td>'; // Ajouter la date à la liste
+            html += '<th>' + getFrenchDayName(currentDate) + ' ' + currentDate.getDate() + ' ' + getFrenchMonthName(currentDate) + '</th>'; // Ajouter la date à la liste
             currentDate.setDate(currentDate.getDate() + 1); // Passer à la prochaine date
         }
 
@@ -35,6 +35,21 @@ document.addEventListener('DOMContentLoaded', function() {
         return html;
     }
 
-    // Afficher la semaine suivante après la semaine suivante, en excluant les samedis et dimanches
-    calendar.innerHTML = '<h2>Calendrier</h2>' + '<div class="week">' + displayWeek(twoWeeksLater) + '</div>';
+    // Afficher seulement la semaine suivante, en excluant les samedis et dimanches
+    calendar.innerHTML = '<h2>Calendrier</h2>' + '<div class="week">' + displayWeek(nextWeek) + '</div>';
+    var editButtons = document.querySelectorAll('.editBtn');
+
+    // Ajoutez un gestionnaire d'événements à chaque bouton
+    editButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            // Récupérez l'ID de l'utilisateur à partir de l'attribut data-id
+            var userId = this.getAttribute('data-id');
+
+            // Affichez le formulaire d'édition lorsque le bouton est cliqué
+            document.getElementById('editForm').style.display = 'block';
+
+            // Assurez-vous que l'ID de l'utilisateur est inclus dans le formulaire
+            document.getElementById('userIdInput').value = userId;
+        });
+    });
 });

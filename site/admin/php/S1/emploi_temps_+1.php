@@ -1,5 +1,9 @@
 <?php
 session_start();
+if (isset($_SESSION['redirect_message'])) {
+    $message = $_SESSION['redirect_message'];
+    unset($_SESSION['redirect_message']); // Réinitialiser la variable pour éviter l'affichage répété du message
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,7 +14,11 @@ session_start();
     <link rel="stylesheet" href="../../../css/emploi_temps.css">
 </head>
 <body>
-    
+    <?php if ($message): ?>
+                <div class="message-popup">
+                    <?php echo htmlspecialchars($message); ?>
+                </div>
+                <?php endif; ?>
     <nav id="nav-1">
         <a class="link-1" href="../../../index.php">déconnexion</a>
         <a class="link-1" href="../BDD/gestion_utilisateur.php">Voir utilisateur</a>
@@ -116,8 +124,54 @@ session_start();
         
             echo "</tr>";
         }
+        echo "</table>";
+            if ($_SESSION['admin']==1){
+                // Obtenir la date de début et de fin de la semaine en cours
+                function getStartAndEndOfNextWeek($date) {
+                    $nextMonday = strtotime('monday next week', strtotime($date));
+                    $nextSunday = strtotime('sunday next week', strtotime($date));
+                    return [date('Y-m-d 00:00:00', $nextMonday), date('Y-m-d 23:59:59', $nextSunday)];
+                }
+                list($startOfNextWeek, $endOfNextWeek) = getStartAndEndOfNextWeek(date('Y-m-d'));
+
+                // Préparer la requête de sélection des notes de la semaine prochaine
+                $sql = "SELECT Notes.id_utilisateur, Notes.contenuNote, Utilisateur.Nom 
+                        FROM Notes 
+                        JOIN Utilisateur ON Notes.id_utilisateur = Utilisateur.id_utilisateur 
+                        WHERE DateNote BETWEEN :startOfNextWeek AND :endOfNextWeek";
+                $stmt = $connexion->prepare($sql);
+
+                // Lier les paramètres
+                $stmt->bindParam(':startOfNextWeek', $startOfNextWeek);
+                $stmt->bindParam(':endOfNextWeek', $endOfNextWeek);
+
+    
+                // Exécuter la requête
+                $stmt->execute();
+    
+                // Afficher les résultats
+                $notes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                if ($notes) {
+                    echo "<h2 class='note-sem''>Notes de la semaine en cours :</h2>";
+                    foreach ($notes as $note) {
+                        echo "<p><strong>De:</strong> " . $note['Nom'] . "<br>";
+                        echo  nl2br($note['contenuNote']) . "</p><hr>";
+                    }
+                } else {
+                    echo "Aucune note pour la semaine.<br>";
+                }
+        }
         ?>
-    </table>
+   
+    <h1>Note</h1>
+    <form action="note+1.php" method="POST">
+        <label for="title">Titre:</label><br>
+        <input type="text" id="title" name="title" required><br><br>
+        <label for="content">Message:</label><br>
+        <textarea id="content" name="content" rows="4" cols="50" required></textarea><br><br>
+        <button type="submit">Envoyer</button>
+    </form>
+
     <script src="/js/emploi_1.js"></script>
 </body>
 </html>

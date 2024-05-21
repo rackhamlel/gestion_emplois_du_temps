@@ -1,5 +1,6 @@
 <?php
 session_start();
+echo $_SESSION['pw'];
 $message = '';
 if (isset($_SESSION['redirect_message'])) {
     $message = $_SESSION['redirect_message'];
@@ -40,12 +41,13 @@ if (isset($_SESSION['redirect_message'])) {
     try {
         // Requête SQL pour sélectionner tous les utilisateurs
         $requete = "SELECT Utilisateur.Nom, Utilisateur.id_utilisateur, 
-                   IFNULL(SUM(TIMESTAMPDIFF(HOUR, EmploiDuTemps.DateHeureEmbauche, EmploiDuTemps.DateHeureDebauche)), 0) AS NombreHeures
-            FROM Utilisateur
-            LEFT JOIN EmploiDuTemps 
-            ON Utilisateur.id_utilisateur = EmploiDuTemps.id_utilisateur 
-            AND WEEK(EmploiDuTemps.DateHeureEmbauche) = WEEK(NOW())
-            GROUP BY Utilisateur.id_utilisateur";
+        IFNULL(SUM(TIMESTAMPDIFF(HOUR, EmploiDuTemps.DateHeureEmbauche, EmploiDuTemps.DateHeureDebauche)), 0) AS NombreHeures
+        FROM Utilisateur
+        LEFT JOIN EmploiDuTemps 
+        ON Utilisateur.id_utilisateur = EmploiDuTemps.id_utilisateur 
+        AND YEARWEEK(EmploiDuTemps.DateHeureEmbauche, 1) >= YEARWEEK(DATE_SUB(NOW(), INTERVAL 7 DAY), 1)
+        GROUP BY Utilisateur.id_utilisateur;
+        ";
 
         // Préparation de la requête
         $statement = $connexion->prepare($requete);
@@ -122,7 +124,7 @@ if (isset($_SESSION['redirect_message'])) {
             // Boucle pour chaque jour de la semaine
             foreach (['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] as $jour) {
                 echo "<td>";
-                
+        
                 // Vérification si des données d'emploi du temps existent pour cette heure et ce jour de la semaine
                 foreach ($emploiDuTemps[$jour] as $plageHoraire) {
                     // Vérification si l'heure actuelle est comprise entre DateHeureEmbauche et DateHeureDebauche
@@ -138,8 +140,54 @@ if (isset($_SESSION['redirect_message'])) {
         
             echo "</tr>";
         }
+        echo "</table>";
+        if ($_SESSION['admin']==1){
+            // Obtenir la date de début et de fin de la semaine en cours
+            function getStartAndEndOfWeek($date) {
+                $monday = strtotime('monday this week', strtotime($date));
+                $sunday = strtotime('sunday this week', strtotime($date));
+                return [date('Y-m-d 00:00:00', $monday), date('Y-m-d 23:59:59', $sunday)];
+            }
+            list($startOfWeek, $endOfWeek) = getStartAndEndOfWeek(date('Y-m-d'));
+
+            // Préparer la requête de sélection des notes de la semaine en cours
+            $sql = "SELECT Notes.id_utilisateur, Notes.contenuNote, Utilisateur.Nom 
+            FROM Notes 
+            JOIN Utilisateur ON Notes.id_utilisateur = Utilisateur.id_utilisateur 
+            WHERE DateNote BETWEEN :startOfWeek AND :endOfWeek";
+            $stmt = $connexion->prepare($sql);
+
+            // Lier les paramètres
+            $stmt->bindParam(':startOfWeek', $startOfWeek);
+            $stmt->bindParam(':endOfWeek', $endOfWeek);
+
+            // Exécuter la requête
+            $stmt->execute();
+
+            // Afficher les résultats
+            $notes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if ($notes) {
+                echo "<h2 class='note-sem''>Notes de la semaine en cours :</h2>";
+                foreach ($notes as $note) {
+                    echo "<p><strong>De:</strong> " . $note['Nom'] . "<br>";
+                    echo  nl2br($note['contenuNote']) . "</p><hr>";
+                }
+            } else {
+                echo "Aucune note pour la semaine en cours.<br>";
+            } 
+        }
         ?>
-    </table>
+        
+    
+    <h1>Note</h1>
+    <form action="../BDD/note.php" method="POST">
+        <label for="title">Titre:</label><br>
+        <input type="text" id="title" name="title" required><br><br>
+        <label for="content">Message:</label><br>
+        <textarea id="content" name="content" rows="4" cols="50" required></textarea><br><br>
+        <button type="submit">Envoyer</button>
+    </form>
+
     <script src="/js/emploi_0.js"></script>
 </body>
 </html>

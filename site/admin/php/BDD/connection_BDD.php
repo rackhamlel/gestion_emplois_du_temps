@@ -1,6 +1,6 @@
 <?php
 session_start();
-// Connexion à la base de données (à remplacer par vos propres informations de connexion)
+// Connexion à la base de données 
 $serveur = "database";
 $utilisateur = "maxime";
 $motdepasse = "FND-FND";
