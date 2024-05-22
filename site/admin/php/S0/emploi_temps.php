@@ -47,14 +47,13 @@ if (isset($_SESSION['redirect_message'])) {
         AND YEARWEEK(EmploiDuTemps.DateHeureEmbauche, 1) >= YEARWEEK(DATE_SUB(NOW(), INTERVAL 7 DAY), 1)
         GROUP BY Utilisateur.id_utilisateur;
         ";
-
         // Préparation de la requête
         $statement = $connexion->prepare($requete);
 
         // Exécution de la requête
         $statement->execute();
         $resultats = $statement->fetchAll(PDO::FETCH_ASSOC);
-        
+        // Affichage si l'utilisateur connecter est admin
         if ($_SESSION['admin']==1){
             // Affichage des utilisateurs sous forme de boutons
             $afficherUtilisateur = '';

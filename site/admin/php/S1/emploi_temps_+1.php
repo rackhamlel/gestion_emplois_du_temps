@@ -52,12 +52,19 @@ if (isset($_SESSION['redirect_message'])) {
 
         // Affichage des utilisateurs sous forme de boutons
         $afficherUtilisateur = '';
-        foreach ($resultats as $row) {
-            $afficherUtilisateur .= "<li class='user-list-item'>
-                                    <button class='editBtn' data-id='" . htmlspecialchars($row["id_utilisateur"]) . "'>" . htmlspecialchars($row["Nom"]) . "</button>
-                                    <p>Heures affectées : " . htmlspecialchars($row["NombreHeures"]) . "</p>
-                                    </li>";
+        if ($_SESSION['admin']==1){
+            // Affichage des utilisateurs sous forme de boutons
+            $afficherUtilisateur = '';
+            foreach ($resultats as $row) {
+                $afficherUtilisateur .= "<li class='user-list-item'>
+                                            <button class='editBtn' data-id='" . htmlspecialchars($row["id_utilisateur"]) . "'>" . htmlspecialchars($row["Nom"]) . "</button>
+                                            <p>Heures affectées : " . htmlspecialchars($row["NombreHeures"]) . "</p>
+                                        </li>";
+            }
+        }else{
+            
         }
+
         echo $afficherUtilisateur;
 
     } catch(PDOException $e) {

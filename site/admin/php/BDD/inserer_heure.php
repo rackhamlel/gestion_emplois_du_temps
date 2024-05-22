@@ -1,15 +1,7 @@
 <?php
 session_start();
 // Connexion à la base de données (à remplacer par vos propres informations de connexion)
-$serveur = "database";
-$utilisateur = "maxime";
-$motdepasse = "FND-FND";
-$base_de_donnees = "GESTION_PLANNING";
-
-try {
-    $connexion = new PDO("mysql:host=$serveur;dbname=$base_de_donnees", $utilisateur, $motdepasse);
-    // Définir le mode d'erreur PDO à exception
-    $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+require_once'connection_BDD.php';
     
     
     // Vérifier si le formulaire a été soumis
@@ -24,7 +16,7 @@ try {
         $heureDebut = $_POST['dateHeureEmbauche'];
         $heureFin = $_POST['dateHeureDebauche'];
 
-        // Convertir la journée de la semaine en numéro de jour (Lundi = 1, Mardi = 2, ...)
+        // Convertir la journée de la semaine en numéro de jour 
         $numeroJour = array(
             'Lundi' => 1,
             'Mardi' => 2,
@@ -57,6 +49,7 @@ try {
         // Exécution de la requête
         $requete->execute();
         header('location:../S0/emploi_temps.php');
+        
         }elseif ($action == "Supprimer") {
             $jourSemaine = $_POST['jourSemaine'];
             $id_utilisateur = $_POST['userId'];
@@ -91,8 +84,5 @@ try {
         }
 
     }
-} catch(PDOException $e) {
-    // Gérer les erreurs PDO
-    die("Erreur : " . $e->getMessage());
-}
+
 ?>

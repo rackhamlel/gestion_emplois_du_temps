@@ -16,6 +16,7 @@ $emploiDuTemps = array(
     'Thursday' => array(),
     'Friday' => array()
 );
+// ajoute les données au tableau associatif 
 while ($rowEmploi = $statementEmploi->fetch(PDO::FETCH_ASSOC)) {
     $jourSemaine = date('l', strtotime($rowEmploi['DateHeureEmbauche']));
     $emploiDuTemps[$jourSemaine][] = $rowEmploi;
