@@ -44,9 +44,10 @@ if (isset($_SESSION['redirect_message'])) {
         FROM Utilisateur
         LEFT JOIN EmploiDuTemps 
         ON Utilisateur.id_utilisateur = EmploiDuTemps.id_utilisateur 
-        AND YEARWEEK(EmploiDuTemps.DateHeureEmbauche, 1) >= YEARWEEK(DATE_SUB(NOW(), INTERVAL 7 DAY), 1)
+        AND YEARWEEK(EmploiDuTemps.DateHeureEmbauche, 1) = YEARWEEK(NOW(), 1)
         GROUP BY Utilisateur.id_utilisateur;
         ";
+
         // Préparation de la requête
         $statement = $connexion->prepare($requete);
 
