@@ -45,12 +45,17 @@ require_once'../BDD/connection_BDD.php';
             );
 
             if (array_key_exists($jourSemaine, $numeroJour)) {
+                // Récupérer le numéro de jour correspondant
                 $jourSemaineNumero = $numeroJour[$jourSemaine];
 
-                $requete_suppression = $connexion->prepare("DELETE FROM EmploiDuTemps WHERE id_utilisateur = :id_utilisateur AND 
-                WEEK(DateHeureEmbauche) = :jourSemaine AND WEEK(DateHeureEmbauche) = WEEK(NOW()) + 1");
+                // Préparer la requête de suppression
+                $requete_suppression = $connexion->prepare("DELETE FROM EmploiDuTemps WHERE id_utilisateur = :id_utilisateur AND DAYOFWEEK(DateHeureEmbauche) = :jourSemaine");
+
+                // Liaison des paramètres
                 $requete_suppression->bindParam(':id_utilisateur', $id_utilisateur);
                 $requete_suppression->bindParam(':jourSemaine', $jourSemaineNumero);
+
+                // Exécution de la requête de suppression
                 $requete_suppression->execute();
 
                            
